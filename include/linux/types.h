@@ -11,6 +11,12 @@
 #include <linux/posix_types.h>
 #include <asm/types.h>
 
+enum __netlock_t {
+       NET_LOCK_USE,
+       NET_LOCK_SLEEP
+};
+typedef enum __netlock_t netlock_t;
+
 #ifndef __KERNEL_STRICT_NAMES
 
 typedef __u32 __kernel_dev_t;
