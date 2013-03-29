@@ -1,9 +1,16 @@
-#include <stdio.h>
+#include <linux/unistd.h>
 #include <linux/types.h>
-#include <sys/syscall.h>
-#include <unistd.h>
-#include <sys/time.h>
+#include <linux/sched.h>
+#include <linux/semaphore.h>
+#include <linux/spinlock.h>
+#include <linux/syscalls.h>
+#include <linux/timer.h>
+#include <asm/param.h>
+#include <asm/uaccess.h>
+#include <linux/spinlock_types.h>
+#include <linux/preempt.h>
 #include <stdlib.h>
+#include <errno.h>
 
 #define net_lock 333
 #define net_unlock 334
@@ -15,12 +22,14 @@ enum __netlock_t {
 typedef enum __netlock_t netlock_t;
 
 int main(int argc, char* argv[]){
-		if(argc!=4)
+		if(argc!=4){
+			printf("invalid arguments\n");
 			exit(1);
+		}
 		
-		int sleep_val;
 		u_int16_t timeout_val;
 		int spin;
+		int sleep_val;
 
 		netlock_t type=NET_LOCK_USE;
 
@@ -33,7 +42,7 @@ int main(int argc, char* argv[]){
 
 		gettimeofday(&tv, NULL);
 		printf("%d: sleeping pid:%d args:%d,%d\n", tv.tv_sec, pid, sleep_val, timeout_val);
-		sleep(timeout_val);
+		sleep(sleep_val);
 
 		gettimeofday(&tv, NULL);
 		printf("%d: calling_net_lock pid:%d\n", tv.tv_sec, pid);

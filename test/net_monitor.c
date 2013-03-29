@@ -2,6 +2,7 @@
 #include <linux/types.h>
 #include <sys/syscall.h>
 #include <unistd.h>
+#include <errno.h>
 
 #define net_lock 333
 #define net_unlock 334
